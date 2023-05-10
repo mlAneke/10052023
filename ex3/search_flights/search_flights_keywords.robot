@@ -1,31 +1,27 @@
 *** Settings ***
-Library     SeleniumLibrary
+Library         SearchFlightPage.py     Firefox    #Chrome
 
-
-*** Variables ***
-${URL}          http://blazedemo.com/
-${BROWSER}      Chrome
 
 *** Keywords ***
+Open search page
+    Open
 
-Open Home Page
-    Open browser    ${URL}   ${BROWSER}
+Close pages
+    Close
 
-Close Browsers
-    Close All Browsers
+Select departure
+    [Arguments]  ${city}
 
+    select departure city  ${city}
 
-Select Departure City
-    [Arguments]      ${departure_city}
-     Select From List By Value   xpath://select[@name='fromPort']  ${departure_city}
+select destination
+    [Arguments]  ${city}
+    select destination city  ${city}
 
-Select Destination City
-    [Arguments]      ${destination_city}
-    Select From List by Value   xpath://select[@name='toPort']    ${destination_city}
+Search Flights
+    search for flights
+    @{flights}=     Get Found Flights
+    set test variable  ${flights}
 
-Search For Flights
-    Click Button    css:input[type='submit']
-
-There are available Flights
-    @{flights}=  Get WebElements    css:table[class='table']>tbody tr
+Flights are found
     Should Not Be Empty     ${flights}
