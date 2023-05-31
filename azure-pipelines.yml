@@ -7,15 +7,9 @@ trigger:
 - main
 
 pool:
-  vmImage: ubuntu-latest
+  vmImage: windows-latest
 strategy:
   matrix:
-    Python27:
-      python.version: '2.7'
-    Python35:
-      python.version: '3.5'
-    Python36:
-      python.version: '3.6'
     Python37:
       python.version: '3.7'
 
@@ -31,6 +25,9 @@ steps:
   displayName: 'Install dependencies'
 
 - script: |
-    pip install pytest pytest-azurepipelines
-    pytest
-  displayName: 'pytest'
+    pip install robotframework robotframework-seleniumlibrary && npm install chromedriver
+  displayName: 'Install dependencies'
+
+- powershell: 
+    robot pythonpath TestCases.robot
+  displayName: 'Run robot tests'
